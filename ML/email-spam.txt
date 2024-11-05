@@ -1,0 +1,60 @@
+2. Classify the email using the binary classification method email spam detection has two status.
+   a. normal state
+   b. abnormal state
+
+# Import necessary libraries
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score, classification_report
+
+# Load the dataset
+df = pd.read_csv("emails.csv")  
+
+df
+
+df.drop(['Email No.'],axis=1, inplace=True)
+
+df.isna().sum()
+
+df.describe()
+
+X = df.drop("Prediction", axis=1)  # Features
+y = df["Prediction"]  # Target variable
+print("Features: ",X)
+print("Target: ",y)
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.15, random_state=8)
+
+#knn
+knn_model = KNeighborsClassifier(n_neighbors=5)
+knn_model.fit(X_train, y_train)
+
+# Support Vector Machine
+svm_model = SVC()
+svm_model.fit(X_train, y_train)
+
+knn_predictions = knn_model.predict(X_test)
+knn_accuracy = accuracy_score(y_test, knn_predictions)
+knn_report = classification_report(y_test, knn_predictions)
+
+print(knn_predictions)
+
+# Print or visualize the evaluation results
+print("K-Nearest Neighbors Accuracy:")
+print(knn_accuracy)
+print("K-Nearest Neighbors Classification Report:")
+print(knn_report)
+
+# Support Vector Machine
+svm_predictions = svm_model.predict(X_test)
+svm_accuracy = accuracy_score(y_test, svm_predictions)
+svm_report = classification_report(y_test, svm_predictions)
+
+print(svm_predictions)
+
+print("Support Vector Machine Accuracy:")
+print(svm_accuracy)
+print("Support Vector Machine Classification Report:")
+print(svm_report)
