@@ -1,0 +1,20 @@
+3. write a smart contract on a test network for bank account of a customer for the following operations
+   a. Deposite Money
+   b. Withdraw Money
+   c. Show Balance
+
+contract Bank {
+   address public owner;
+   uint public balance;
+   constructor() {
+     owner = msg.sender;
+   }
+   function deposit() external payable {
+     balance += msg.value;
+   }
+   function withdraw(uint _amount) external {     
+     require(balance >= _amount, "Insufficient balance!");
+     payable(owner).transfer(_amount);
+     balance -= _amount;
+   }
+}
